@@ -215,12 +215,12 @@ export default {
 
     keyPress(e) { // works only on Desktop
       if (e.ctrlKey) return; // Fix FF copy/paste issue
-      // IE & FF are not trigger textInput event, so we have to force it
+      // IE & FF < 126 do not trigger textInput event, so we have to force it
       /* eslint-disable */
       const isIE = /*@cc_on!@*/false || !!document.documentMode; //by http://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
       /* eslint-enable */
-      const isFirefox = typeof InstallTrigger !== 'undefined';
-      if (isIE || isFirefox) {
+      const isTextEventSupported = typeof TextEvent !== 'undefined';
+      if (isIE || !isTextEventSupported) {
         e.preventDefault();
         e.data = e.key;
         this.textInput(e);
